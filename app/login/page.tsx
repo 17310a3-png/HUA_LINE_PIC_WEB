@@ -5,7 +5,7 @@ export default function LoginPage() {
   const handleLogin = async () => {
     const supabase = supabaseBrowser();
     await supabase.auth.signInWithOAuth({
-      provider: "line" as any,
+      provider: "github",
       options: { redirectTo: `${location.origin}/auth/callback` }
     });
   };
@@ -17,9 +17,9 @@ export default function LoginPage() {
         <p className="text-center text-sm text-neutral-500">登入後才能建立套組</p>
         <button
           onClick={handleLogin}
-          className="w-full rounded bg-green-500 py-3 font-medium text-white hover:bg-green-600"
+          className="w-full rounded bg-neutral-900 py-3 font-medium text-white hover:bg-neutral-800"
         >
-          用 LINE 登入
+          用 GitHub 登入
         </button>
       </div>
     </main>
