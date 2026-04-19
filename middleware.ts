@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+
+type CookieItem = { name: string; value: string; options: CookieOptions };
 
 const PUBLIC = new Set(["/login", "/auth/callback"]);
 
@@ -15,7 +17,7 @@ export async function middleware(req: NextRequest) {
         getAll() {
           return req.cookies.getAll();
         },
-        setAll(all) {
+        setAll(all: CookieItem[]) {
           all.forEach(({ name, value, options }) =>
             res.cookies.set(name, value, options)
           );
