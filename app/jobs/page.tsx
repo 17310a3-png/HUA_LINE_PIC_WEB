@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { apiJson } from "@/lib/api";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 
 type Job = {
   id: string;
@@ -27,6 +29,12 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("all");
+  const router = useRouter();
+
+  async function logout() {
+    await supabaseBrowser().auth.signOut();
+    router.replace("/login");
+  }
 
   useEffect(() => {
     apiJson("/jobs")
@@ -52,9 +60,18 @@ export default function JobsPage() {
             每一組都是一段獨一無二的角色故事。
           </p>
         </div>
-        <Link href="/new" className="btn-primary shrink-0">
-          ＋ 建立新套組
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <Link href="/new" className="btn-primary">
+            ＋ 建立新套組
+          </Link>
+          <button
+            onClick={logout}
+            className="rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high"
+            title="登出"
+          >
+            登出
+          </button>
+        </div>
       </header>
 
       <nav className="mb-6 flex gap-2">
